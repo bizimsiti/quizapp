@@ -18,12 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={cn(inter.className, "antialiased min-h-screen pt-16")}>
+    <html suppressHydrationWarning={true} lang="en">
+      <body className={cn(inter.className)}>
         <Providers>
           <Nav />
+          <div className="container pt-2">{children}</div>
         </Providers>
-        {children}
       </body>
     </html>
   );
