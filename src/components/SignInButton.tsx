@@ -8,7 +8,7 @@ type Props = {
   text: string;
 };
 
-const SıgnInButton = ({ text }: Props) => {
+const SignInButton = ({ text }: Props) => {
   return (
     <Button
       onClick={() => {
@@ -20,4 +20,4 @@ const SıgnInButton = ({ text }: Props) => {
   );
 };
 
-export default SıgnInButton;
+export default SignInButton;

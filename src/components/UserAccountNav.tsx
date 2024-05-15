@@ -8,11 +8,11 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { Button } from "./ui/button";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "@/components/UserAvatar";
 
 type Props = {
   user: User;

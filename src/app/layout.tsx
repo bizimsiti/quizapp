@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Nav from "@/components/Nav";
+import Providers from "@/components/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,13 +14,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "aantialiased min-h-screen pt-16")}>
-        <Nav />
+      <body className={cn(inter.className, "antialiased min-h-screen pt-16")}>
+        <Providers>
+          <Nav />
+        </Providers>
         {children}
       </body>
     </html>
