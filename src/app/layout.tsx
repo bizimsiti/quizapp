@@ -19,10 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning={true} lang="en">
-      <body className={cn(inter.className)}>
+      <body className={cn(inter.className, "antialiased min-h-screen")}>
         <Providers>
           <Nav />
-          <div className="container pt-2">{children}</div>
+          {children}
         </Providers>
       </body>
     </html>

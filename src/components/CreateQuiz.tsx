@@ -22,7 +22,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { BookOpen, CopyCheck } from "lucide-react";
+import { BookOpen, CopyCheck, Copy } from "lucide-react";
 import { Separator } from "./ui/separator";
 type Props = {};
 
@@ -40,7 +40,7 @@ const CreateQuiz = (props: Props) => {
   function onSubmit(input: Input) {
     alert(JSON.stringify(input, null, 2));
   }
-  // form.watch();
+  form.watch();
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
       <Card>
@@ -99,8 +99,8 @@ const CreateQuiz = (props: Props) => {
                     form.getValues("type") === "mcq" ? "default" : "secondary"
                   }
                 >
-                  <CopyCheck className="w-4 h-4 mr-2" />
-                  Multiple Choise
+                  <Copy className="w-4 h-4 mr-2" />
+                  Open Ended
                 </Button>
                 <Separator orientation="vertical" />
                 <Button
