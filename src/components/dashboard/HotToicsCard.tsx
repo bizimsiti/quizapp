@@ -16,7 +16,7 @@ const HotToicsCard = (props: Props) => {
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Hot Toics</CardTitle>
         <CardDescription>
-          Click on a toic to start q quiz on it!
+          Click on a toic to start a quiz on it!
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">

@@ -11,16 +11,16 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     const body = await req.json();
     const { amount, type, topic } = createQuizSchema.parse(body);
     let questions: any;
-    if (!session?.user) {
-      return NextResponse.json(
-        {
-          error: "You must be logged in first!"
-        },
-        {
-          status: 401
-        }
-      );
-    }
+    // if (!session?.user) {
+    //   return NextResponse.json(
+    //     {
+    //       error: "You must be logged in first!"
+    //     },
+    //     {
+    //       status: 401
+    //     }
+    //   );
+    // }
     if (type === "open_ended") {
       questions = await strict_output(
         "You are a helpful AI that is able to generate a pair of question and answers, the length of each answer should not be more than 15 words, store all the pairs of answers and questions in a JSON array",

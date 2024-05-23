@@ -24,11 +24,25 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { BookOpen, CopyCheck, Copy } from "lucide-react";
 import { Separator } from "./ui/separator";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 type Props = {};
 
 type Input = z.infer<typeof createQuizSchema>;
 
 const CreateQuiz = (props: Props) => {
+  const router = useRouter();
+  const { mutate: getQuestions, isPending } = useMutation({
+    mutationFn: async ({ amount, topic, type }: Input) => {
+      const response = await axios.post("/api/game", {
+        amount,
+        topic,
+        type
+      });
+      return response.data;
+    }
+  });
   const form = useForm<Input>({
     resolver: zodResolver(createQuizSchema),
     defaultValues: {
@@ -38,7 +52,22 @@ const CreateQuiz = (props: Props) => {
     }
   });
   function onSubmit(input: Input) {
-    alert(JSON.stringify(input, null, 2));
+    getQuestions(
+      {
+        amount: input.amount,
+        topic: input.topic,
+        type: input.type
+      },
+      {
+        onSuccess({ gameId }) {
+          if (input.type === "mcq") {
+            router.push(`/play/mcq/${gameId}`);
+          } else {
+            router.push(`/play/open_ended/${gameId}`);
+          }
+        }
+      }
+    );
   }
   form.watch();
   return (
@@ -100,7 +129,7 @@ const CreateQuiz = (props: Props) => {
                   }
                 >
                   <Copy className="w-4 h-4 mr-2" />
-                  Open Ended
+                  Multiple Choice
                 </Button>
                 <Separator orientation="vertical" />
                 <Button
@@ -119,7 +148,9 @@ const CreateQuiz = (props: Props) => {
                   Open Ended
                 </Button>
               </div>
-              <Button type="submit">Submit</Button>
+              <Button disabled={isPending} type="submit">
+                Submit
+              </Button>
             </form>
           </Form>
         </CardContent>
