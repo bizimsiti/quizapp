@@ -89,7 +89,11 @@ const CreateQuiz = (props: Props) => {
                     <FormControl>
                       <Input placeholder="topic..." {...field} />
                     </FormControl>
-                    <FormDescription>Provide a topic.</FormDescription>
+                    <FormDescription>
+                      {" "}
+                      Please provide any topic you would like to be quizzed on
+                      here.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -129,7 +133,7 @@ const CreateQuiz = (props: Props) => {
                   }
                 >
                   <Copy className="w-4 h-4 mr-2" />
-                  Multiple Choice
+                  Multiple Choise
                 </Button>
                 <Separator orientation="vertical" />
                 <Button
