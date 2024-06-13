@@ -63,7 +63,7 @@ const CreateQuiz = (props: Props) => {
           if (input.type === "mcq") {
             router.push(`/play/mcq/${gameId}`);
           } else {
-            router.push(`/play/open_ended/${gameId}`);
+            router.push(`/play/open-ended/${gameId}`);
           }
         }
       }

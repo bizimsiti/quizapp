@@ -11,8 +11,8 @@ import { checkAnswerSchema } from "@/schemas/form/quiz";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-
+import { cn, formatTimeDelta } from "@/lib/utils";
+import { differenceInSeconds } from "date-fns";
 type Props = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
 };
@@ -22,16 +22,32 @@ const Mcq = ({ game }: Props) => {
   const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [wrongAnswers, setWrongAnswers] = useState<number>(0);
+  const [now, setNow] = React.useState<Date>(new Date());
+  const [isEnded, setIsEnded] = useState<boolean>(false);
+  const { toast } = useToast();
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isEnded) {
+        setNow(new Date());
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isEnded]);
+
+  // current question
   const currentQuestion = React.useMemo(() => {
     return game.questions[questionIndex];
   }, [questionIndex, game.questions]);
+
+  //options
   const options = React.useMemo(() => {
     if (!currentQuestion) return [];
     if (!currentQuestion.options) return [];
     return JSON.parse(currentQuestion.options as string) as string[];
   }, [currentQuestion]);
-  const [isEnded, setIsEnded] = useState<boolean>(false);
-  const { toast } = useToast();
+
+  //mutation
   const { mutate: checkAnswer, isPending } = useMutation({
     mutationFn: async () => {
       const payload: z.infer<typeof checkAnswerSchema> = {
@@ -42,6 +58,8 @@ const Mcq = ({ game }: Props) => {
       return response.data;
     }
   });
+
+  //handle next question
   const handleNext = React.useCallback(() => {
     if (isPending) return;
     checkAnswer(undefined, {
@@ -68,11 +86,14 @@ const Mcq = ({ game }: Props) => {
       }
     });
   }, [checkAnswer, toast, game.questions.length, questionIndex]);
+
+  // if question end
   if (isEnded) {
     return (
       <div className="absolute flex flex-col justify-center -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
         <div className="px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
-          You Completed in {"3m 4s"}
+          You Completed in{" "}
+          {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
         </div>
         <Link
           href={`/statistics/${game.id}`}
@@ -96,7 +117,9 @@ const Mcq = ({ game }: Props) => {
           </p>
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
-            <span>{game.timeStarted.toDateString()}</span>
+            <span>
+              {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+            </span>
           </div>
         </div>
         <McqCounter correctAnswer={correctAnswers} wrongAnswer={wrongAnswers} />
@@ -120,7 +143,7 @@ const Mcq = ({ game }: Props) => {
             <Button
               variant={selectedChoice === index ? "default" : "secondary"}
               onClick={() => setSelectedChoice(index)}
-              key={option}
+              key={index}
               className="justify-start w-full py-8 mb-4"
             >
               <div className="flex items-center justify-start">
