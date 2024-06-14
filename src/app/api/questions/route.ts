@@ -1,6 +1,6 @@
 import { strict_output } from "@/lib/gptout";
 import { getAuthSession } from "@/lib/nextauth";
-import { createQuizSchema } from "@/schemas/form/quiz";
+import { getQuestionsSchema } from "@/schemas/questions";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
     const session = await getAuthSession();
     const body = await req.json();
-    const { amount, type, topic } = createQuizSchema.parse(body);
+    const { amount, type, topic } = getQuestionsSchema.parse(body);
     let questions: any;
     // if (!session?.user) {
     //   return NextResponse.json(

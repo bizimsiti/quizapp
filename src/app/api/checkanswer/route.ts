@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkAnswerSchema } from "@/schemas/form/quiz";
+import { checkAnswerSchema } from "@/schemas/questions";
 import { ZodError } from "zod";
 import prisma from "@/lib/db";
 import { stringSimilarity } from "string-similarity-js";
@@ -26,6 +26,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         userAnswer
       }
     });
+    console.log(question.questionType);
+
     if (question.questionType === "mcq") {
       const isCorrect =
         question.answer.toLowerCase().trim() ===

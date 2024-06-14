@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "./ui/button";
 import McqCounter from "./McqCounter";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
-import { checkAnswerSchema } from "@/schemas/form/quiz";
+import { checkAnswerSchema, endGameSchema } from "@/schemas/questions";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import Link from "next/link";
@@ -63,6 +63,17 @@ const Mcq = ({ game }: Props) => {
     }
   });
 
+  //end game logic
+  const { mutate: endGame } = useMutation({
+    mutationFn: async () => {
+      const payload: z.infer<typeof endGameSchema> = {
+        gameId: game.id
+      };
+      const res = await axios.post(`/api/end-game`, payload);
+      return res.data;
+    }
+  });
+
   //handle next question
   const handleNext = React.useCallback(() => {
     if (isPending) return;
@@ -83,13 +94,14 @@ const Mcq = ({ game }: Props) => {
         }
 
         if (questionIndex === game.questions.length - 1) {
+          endGame();
           setIsEnded(true);
           return;
         }
         setQuestionIndex((prev) => prev + 1);
       }
     });
-  }, [checkAnswer, toast, game.questions.length, questionIndex]);
+  }, [checkAnswer, toast, game.questions.length, questionIndex, endGame]);
 
   // if question end
   if (isEnded) {

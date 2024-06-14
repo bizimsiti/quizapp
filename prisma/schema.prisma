@@ -100,6 +100,12 @@ model Question {
   @@index([gameId])
 }
 
+model TopicCount {
+  id    String @id @default(cuid()) @map("_id")
+  topic String @unique
+  count Int
+}
+
 // // Optional for WebAuthn support
 // model Authenticator {
 //   credentialID         String  @unique

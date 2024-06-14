@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import axios from "axios";
 import BlankAnswerInput from "./BlankAnswerInput";
-import { checkAnswerSchema } from "@/schemas/form/quiz";
+import { checkAnswerSchema, endGameSchema } from "@/schemas/questions";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
@@ -32,6 +32,17 @@ const OpenEnded = ({ game }: Props) => {
   const currentQuestion = React.useMemo(() => {
     return game.questions[questionIndex];
   }, [questionIndex, game.questions]);
+
+  //end game logic
+  const { mutate: endGame } = useMutation({
+    mutationFn: async () => {
+      const payload: z.infer<typeof endGameSchema> = {
+        gameId: game.id
+      };
+      const res = await axios.post(`/api/end-game`, payload);
+      return res.data;
+    }
+  });
 
   //mutation
   const { mutate: checkAnswer, isPending } = useMutation({
@@ -70,13 +81,21 @@ const OpenEnded = ({ game }: Props) => {
           description: "answers are matched based on similarity comparisons"
         });
         if (questionIndex === game.questions.length - 1) {
+          endGame();
           setIsEnded(true);
           return;
         }
         setQuestionIndex((prev) => prev + 1);
       }
     });
-  }, [checkAnswer, toast, game.questions.length, questionIndex, blankAnswer]);
+  }, [
+    checkAnswer,
+    toast,
+    game.questions.length,
+    questionIndex,
+    blankAnswer,
+    endGame
+  ]);
 
   if (isEnded) {
     return (

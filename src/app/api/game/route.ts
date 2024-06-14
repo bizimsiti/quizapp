@@ -39,6 +39,20 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         userId: session.user.id
       }
     });
+    await prisma.topicCount.upsert({
+      where: {
+        topic
+      },
+      create: {
+        topic,
+        count: 1
+      },
+      update: {
+        count: {
+          increment: 1
+        }
+      }
+    });
     const { data } = await axios.post(
       `${process.env.BASE_API_ENDPOINT}/questions`,
       {
