@@ -25,14 +25,18 @@ import { Button } from "./ui/button";
 import { BookOpen, CopyCheck, Copy } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import Loading from "./Loading";
+import { toast } from "./ui/use-toast";
 type Props = {};
 
 type Input = z.infer<typeof createQuizSchema>;
 
 const CreateQuiz = (props: Props) => {
   const router = useRouter();
+  const [showLoader, setShowLoader] = React.useState<boolean>(false);
+  const [finishedLoading, setFinishedLoading] = React.useState(false);
   const { mutate: getQuestions, isPending } = useMutation({
     mutationFn: async ({ amount, topic, type }: Input) => {
       const response = await axios.post("/api/game", {
@@ -52,6 +56,7 @@ const CreateQuiz = (props: Props) => {
     }
   });
   function onSubmit(input: Input) {
+    setShowLoader(true);
     getQuestions(
       {
         amount: input.amount,
@@ -60,16 +65,34 @@ const CreateQuiz = (props: Props) => {
       },
       {
         onSuccess({ gameId }) {
-          if (input.type === "mcq") {
-            router.push(`/play/mcq/${gameId}`);
-          } else {
-            router.push(`/play/open-ended/${gameId}`);
+          setFinishedLoading(true);
+          setTimeout(() => {
+            if (input.type === "mcq") {
+              router.push(`/play/mcq/${gameId}`);
+            } else {
+              router.push(`/play/open-ended/${gameId}`);
+            }
+          }, 2000);
+        },
+        onError: (error) => {
+          setShowLoader(false);
+          if (error instanceof AxiosError) {
+            if (error.response?.status === 500) {
+              toast({
+                title: "Error",
+                description: "Something went wrong. Please try again later.",
+                variant: "destructive"
+              });
+            }
           }
         }
       }
     );
   }
   form.watch();
+  if (showLoader) {
+    return <Loading finished={finishedLoading} />;
+  }
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
       <Card>

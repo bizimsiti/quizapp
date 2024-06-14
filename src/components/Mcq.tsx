@@ -13,6 +13,9 @@ import { useToast } from "./ui/use-toast";
 import Link from "next/link";
 import { cn, formatTimeDelta } from "@/lib/utils";
 import { differenceInSeconds } from "date-fns";
+import dynamic from "next/dynamic";
+
+const TimeCounter = dynamic(() => import("./TimeCounter"), { ssr: false });
 type Props = {
   game: Game & { questions: Pick<Question, "id" | "options" | "question">[] };
 };
@@ -26,6 +29,7 @@ const Mcq = ({ game }: Props) => {
   const [isEnded, setIsEnded] = useState<boolean>(false);
   const { toast } = useToast();
 
+  // time counter
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (!isEnded) {
@@ -115,12 +119,7 @@ const Mcq = ({ game }: Props) => {
               {game.topic}
             </span>
           </p>
-          <div className="flex self-start mt-3 text-slate-400">
-            <Timer className="mr-2" />
-            <span>
-              {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
-            </span>
-          </div>
+          <TimeCounter now={now} gameTimeStarted={game.timeStarted} />
         </div>
         <McqCounter correctAnswer={correctAnswers} wrongAnswer={wrongAnswers} />
       </div>
