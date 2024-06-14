@@ -54,7 +54,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       }
     });
     const { data } = await axios.post(
-      `${process.env.BASE_API_ENDPOINT}/questions`,
+      `${process.env.BASE_API_ENDPOINT}/api/questions`,
       {
         amount,
         topic,
