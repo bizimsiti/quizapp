@@ -1,32 +1,16 @@
 "use client";
 import { useTheme } from "next-themes";
 import WordCloud from "react-d3-cloud";
-const data = [
-  {
-    text: "hello",
-    value: 3
-  },
-  {
-    text: "word",
-    value: 12
-  },
-  {
-    text: "computer",
-    value: 4
-  },
-  {
-    text: "typescript",
-    value: 8
-  }
-];
 
 const fontSizeMapper = (word: { value: number }) => {
   return Math.log2(word.value) * 5 + 16;
 };
 
-type Props = {};
+type Props = {
+  formatTopics: { text: string; value: number }[];
+};
 
-const CustomWordCloud = (props: Props) => {
+const CustomWordCloud = ({ formatTopics }: Props) => {
   const theme = useTheme();
   return (
     <div>
@@ -37,7 +21,7 @@ const CustomWordCloud = (props: Props) => {
         rotate={0}
         padding={10}
         fill={theme.theme === "dark" ? "white" : "black"}
-        data={data}
+        data={formatTopics}
       />
     </div>
   );
