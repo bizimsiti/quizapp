@@ -5,18 +5,25 @@ import { Button } from "./ui/button";
 import { signIn } from "next-auth/react";
 
 type Props = {
-  text: string;
+  provider: string;
 };
 
-const SignInButton = ({ text }: Props) => {
+const SignInButton = ({ provider }: Props) => {
   return (
-    <Button
-      onClick={() => {
-        signIn("google").catch(console.error);
-      }}
-    >
-      {text}
-    </Button>
+    <>
+      <Button
+        className="mb-3"
+        onClick={() => {
+          if (provider === "google") {
+            signIn("google").catch(console.error);
+          } else {
+            signIn("github").catch(console.error);
+          }
+        }}
+      >
+        {`Sign in with ${provider}`}
+      </Button>
+    </>
   );
 };
 

@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
     const session = await getAuthSession();
     const body = await req.json();
-    const { amount, type, topic } = getQuestionsSchema.parse(body);
+    const { amount, type, topic, language } = getQuestionsSchema.parse(body);
     let questions: any;
     // if (!session?.user) {
     //   return NextResponse.json(
@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       questions = await strict_output(
         "You are a helpful AI that is able to generate a pair of question and answers, the length of each answer should not be more than 15 words, store all the pairs of answers and questions in a JSON array",
         new Array(amount).fill(
-          `You are to generate a random hard open-ended questions about ${topic}`
+          `You are to generate a random hard open-ended questions with ${language} and about ${topic} `
         ),
         {
           question: "question",
@@ -36,7 +36,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       questions = await strict_output(
         "You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not be more than 15 words, store all answers and questions and options in a JSON array",
         new Array(amount).fill(
-          `You are to generate a random hard mcq question about ${topic}`
+          `You are to generate a random hard mcq question  with ${language} and about ${topic}`
         ),
         {
           question: "question",

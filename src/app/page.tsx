@@ -26,8 +26,9 @@ export default async function Home() {
             suscipit?
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <SignInButton text="Sign In with Google!" />
+        <CardContent className="flex flex-col">
+          <SignInButton provider="google" />
+          <SignInButton provider="github" />
         </CardContent>
       </Card>
     </div>

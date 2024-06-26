@@ -43,6 +43,9 @@ const History = async ({ limit, userId }: Props) => {
                 <p className="text-sm text-muted-foreground">
                   {game.gameType === "mcq" ? "Multiple Choice" : "Open-Ended"}
                 </p>
+                <p className="text-sm text-muted-foreground">
+                  {game.language === "turkish" ? "Turkish" : "English"}
+                </p>
               </div>
             </div>
           </div>

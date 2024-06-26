@@ -21,11 +21,7 @@ const Nav = async (props: Props) => {
         <div className="flex items-center">
           <ThemeToggle className="mr-4" />
           <div className="flex items-center">
-            {session?.user ? (
-              <UserAccountNav user={session.user} />
-            ) : (
-              <SignInButton text="Sign In" />
-            )}
+            {session?.user && <UserAccountNav user={session.user} />}
           </div>
         </div>
       </div>

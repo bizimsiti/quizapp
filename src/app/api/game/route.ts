@@ -30,12 +30,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       );
     }
     const body = await req.json();
-    const { amount, topic, type } = createQuizSchema.parse(body);
+    const { amount, topic, type, language } = createQuizSchema.parse(body);
     const game = await prisma.game.create({
       data: {
         gameType: type,
         timeStarted: new Date(),
         topic: topic,
+        language: language,
         userId: session.user.id
       }
     });
@@ -58,7 +59,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       {
         amount,
         topic,
-        type
+        type,
+        language
       }
     );
 

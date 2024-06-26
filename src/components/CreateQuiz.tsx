@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle
 } from "./ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,11 +39,12 @@ const CreateQuiz = (props: Props) => {
   const [showLoader, setShowLoader] = React.useState<boolean>(false);
   const [finishedLoading, setFinishedLoading] = React.useState(false);
   const { mutate: getQuestions, isPending } = useMutation({
-    mutationFn: async ({ amount, topic, type }: Input) => {
+    mutationFn: async ({ amount, topic, type, language }: Input) => {
       const response = await axios.post("/api/game", {
         amount,
         topic,
-        type
+        type,
+        language
       });
       return response.data;
     }
@@ -52,16 +54,20 @@ const CreateQuiz = (props: Props) => {
     defaultValues: {
       amount: 3,
       topic: "",
-      type: "open_ended"
+      type: "open_ended",
+      language: "english"
     }
   });
   function onSubmit(input: Input) {
+    console.log(input);
+
     setShowLoader(true);
     getQuestions(
       {
         amount: input.amount,
         topic: input.topic,
-        type: input.type
+        type: input.type,
+        language: input.language
       },
       {
         onSuccess({ gameId }) {
@@ -144,37 +150,71 @@ const CreateQuiz = (props: Props) => {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-between">
-                <Button
-                  type="button"
-                  onClick={() => {
-                    form.setValue("type", "mcq");
-                  }}
-                  className="w-1/2 rounded-none rounded-l-lg"
-                  variant={
-                    form.getValues("type") === "mcq" ? "default" : "secondary"
-                  }
-                >
-                  <Copy className="w-4 h-4 mr-2" />
-                  Multiple Choise
-                </Button>
-                <Separator orientation="vertical" />
-                <Button
-                  type="button"
-                  onClick={() => {
-                    form.setValue("type", "open_ended");
-                  }}
-                  className="w-1/2 rounded-none rounded-r-lg"
-                  variant={
-                    form.getValues("type") === "open_ended"
-                      ? "default"
-                      : "secondary"
-                  }
-                >
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Open Ended
-                </Button>
+
+              <div className="flex justify-between flex-col">
+                <div className="mb-2">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      form.setValue("language", "english");
+                    }}
+                    className="w-1/2 rounded-none "
+                    variant={
+                      form.getValues("language") === "english"
+                        ? "default"
+                        : "secondary"
+                    }
+                  >
+                    English
+                  </Button>
+
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      form.setValue("language", "turkish");
+                    }}
+                    className="w-1/2 rounded-none "
+                    variant={
+                      form.getValues("language") === "turkish"
+                        ? "default"
+                        : "secondary"
+                    }
+                  >
+                    Turkish
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      form.setValue("type", "mcq");
+                    }}
+                    className="w-1/2 rounded-none "
+                    variant={
+                      form.getValues("type") === "mcq" ? "default" : "secondary"
+                    }
+                  >
+                    <Copy className="w-4 h-4 mr-2" />
+                    Multiple Choise
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      form.setValue("type", "open_ended");
+                    }}
+                    className="w-1/2 rounded-none rounded-r-lg"
+                    variant={
+                      form.getValues("type") === "open_ended"
+                        ? "default"
+                        : "secondary"
+                    }
+                  >
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    Open Ended
+                  </Button>
+                </div>
               </div>
+
               <Button disabled={isPending} type="submit">
                 Submit
               </Button>
