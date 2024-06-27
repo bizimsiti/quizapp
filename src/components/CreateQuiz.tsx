@@ -151,14 +151,14 @@ const CreateQuiz = (props: Props) => {
                 )}
               />
 
-              <div className="flex justify-between flex-col">
-                <div className="mb-2">
+              <div className="flex justify-between flex-col ">
+                <div className="mb-2 flex flex-col sm:flex-row">
                   <Button
                     type="button"
                     onClick={() => {
                       form.setValue("language", "english");
                     }}
-                    className="w-1/2 rounded-none "
+                    className="rounded-none sm:w-1/2"
                     variant={
                       form.getValues("language") === "english"
                         ? "default"
@@ -173,7 +173,7 @@ const CreateQuiz = (props: Props) => {
                     onClick={() => {
                       form.setValue("language", "turkish");
                     }}
-                    className="w-1/2 rounded-none "
+                    className="rounded-none sm:w-1/2 "
                     variant={
                       form.getValues("language") === "turkish"
                         ? "default"
@@ -183,13 +183,13 @@ const CreateQuiz = (props: Props) => {
                     Turkish
                   </Button>
                 </div>
-                <div>
+                <div className="flex flex-col sm:flex-row">
                   <Button
                     type="button"
                     onClick={() => {
                       form.setValue("type", "mcq");
                     }}
-                    className="w-1/2 rounded-none "
+                    className="sm:w-1/2  rounded-none "
                     variant={
                       form.getValues("type") === "mcq" ? "default" : "secondary"
                     }
@@ -202,7 +202,7 @@ const CreateQuiz = (props: Props) => {
                     onClick={() => {
                       form.setValue("type", "open_ended");
                     }}
-                    className="w-1/2 rounded-none rounded-r-lg"
+                    className="sm:w-1/2  rounded-none"
                     variant={
                       form.getValues("type") === "open_ended"
                         ? "default"
