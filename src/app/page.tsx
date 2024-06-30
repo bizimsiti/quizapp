@@ -29,6 +29,7 @@ export default async function Home() {
         <CardContent className="flex flex-col">
           <SignInButton provider="google" />
           <SignInButton provider="github" />
+          <SignInButton provider="credentials" />
         </CardContent>
       </Card>
     </div>

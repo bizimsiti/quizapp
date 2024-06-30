@@ -120,17 +120,18 @@ const Mcq = ({ game }: Props) => {
         </Link>
       </div>
     );
-  }
+  } // absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2
   return (
-    <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
+    <div className="sm:max-md:w-full mx-auto mt-4 sm:absolute sm:-translate-x-1/2 sm:-translate-y-1/2 sm:top-1/2 sm:left-1/2 md:w-[80vw] max-w-4xl w-[90vw]">
       <div className="flex flex-row justify-between">
         <div className="flex flex-col">
-          <p>
-            <span className="text-slate-400 mr-2">Topic</span> &nbsp;
+          <div className="flex flex-col sm:flex-row">
+            <span className="text-slate-400 mr-2">Topic</span>
+
             <span className="px-2 py-1 text-white rounded-lg bg-slate-800">
               {game.topic}
             </span>
-          </p>
+          </div>
           <TimeCounter now={now} gameTimeStarted={game.timeStarted} />
         </div>
         <McqCounter correctAnswer={correctAnswers} wrongAnswer={wrongAnswers} />

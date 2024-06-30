@@ -16,8 +16,13 @@ const SignInButton = ({ provider }: Props) => {
         onClick={() => {
           if (provider === "google") {
             signIn("google").catch(console.error);
-          } else {
+          } else if (provider === "github") {
             signIn("github").catch(console.error);
+          } else {
+            signIn("credentials", {
+              email: "ali",
+              password: "123"
+            }).catch(console.error);
           }
         }}
       >

@@ -24,6 +24,16 @@ const ResultsCard = ({ accuracy }: Props) => {
               </span>
             </div>
           </>
+        ) : accuracy > 50 ? (
+          <>
+            <Trophy className="mr-4" stroke="seagreen" size={50} />
+            <div className="flex flex-col text-2xl font-semibold text-green-700">
+              <span className="">Good job!</span>
+              <span className="text-sm text-center text-green-700 opacity-50">
+                {"> 50% accuracy"}
+              </span>
+            </div>
+          </>
         ) : accuracy > 25 ? (
           <>
             <Trophy className="mr-4" stroke="silver" size={50} />

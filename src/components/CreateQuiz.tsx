@@ -59,8 +59,6 @@ const CreateQuiz = (props: Props) => {
     }
   });
   function onSubmit(input: Input) {
-    console.log(input);
-
     setShowLoader(true);
     getQuestions(
       {
