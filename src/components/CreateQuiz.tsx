@@ -100,7 +100,7 @@ const CreateQuiz = (props: Props) => {
     return <Loading finished={finishedLoading} />;
   }
   return (
-    <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+    <div className="sm:max-md:w-full mx-auto mt-4 sm:absolute sm:-translate-x-1/2 sm:-translate-y-1/2 sm:top-1/2 sm:left-1/2">
       <Card>
         <CardHeader>
           <CardTitle className="font-bold text-2xl">Create Quiz</CardTitle>
